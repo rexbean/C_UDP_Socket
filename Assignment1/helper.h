@@ -6,7 +6,8 @@
 #include<sys/socket.h>
 #include<netinet/in.h>
 #include<string.h>
-
+//author : Zihao Li
+//Student Id: W1273148
 short getType(char * buf){
     short type = 0;
     int i = 0;

@@ -9,6 +9,8 @@
 #include "packetFormat.h"
 #include "helper.h"
 #include "request.h"
+//author: Zihao Li
+//student Id: W1273148
 
 #define MYPORT 32815
 
@@ -58,6 +60,7 @@ void startServer(int sock){
     char recvbuf[1024] = {0};
     int type;
     printf("readfile in \n");
+    //read file in
     count = readFile(number, technology, paid);
 
     for(int i = 0; i < count; i ++){
@@ -78,6 +81,7 @@ void startServer(int sock){
             errorOutput("recvfrom error");
         } else {
             printf("message received : %s\n", recvbuf);
+            // parse the packet
             parsePacket(recvbuf, packetLength, sock);
         }
         printf("\n\n");
@@ -88,7 +92,6 @@ void startServer(int sock){
 void parsePacket(char * buf, int len, int sock){
     struct Request request;
     printf("parse Packet\n");
-    socklen_t clientLen = sizeof(clientAddr);
     memset(&request, 0 , sizeof(request));
     copyMemory(buf, (char *)&request, len);
     printf("checkPacket\n");
@@ -103,6 +106,7 @@ void checkPacket(struct Request * request, int sock){
     char * num = (char *)malloc(sizeof(char *));
     sprintf(num,"%u", request -> number);
     printf("phone number = %s\n", num);
+    // find the number
     for(int i = 0; i < count; i++){
         if(strcmp(number[i], num) == 0){
             index = i;
@@ -129,14 +133,4 @@ void checkPacket(struct Request * request, int sock){
     generateFromRequest(&requestRe, status, request);
     sendto(sock, (char *)&requestRe, sizeof(requestRe), 0,
           (struct sockaddr *)&clientAddr, clientLen);
-    // generateACK(&ack, data);
-    // sendto(sock, (char *)&ack, sizeof(ack), 0,
-    //           (struct sockaddr *)&clientAddr, clientLen);
-    // } else {
-    //     generateReject(&reject, data, rejectCode);
-    //     sendto(sock, (char *)&reject, sizeof(reject), 0,
-    //           (struct sockaddr *)&clientAddr, clientLen);
-    // }
-    // order[index] = 1;
-    // prev = index;
 }

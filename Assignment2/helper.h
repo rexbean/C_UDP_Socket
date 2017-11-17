@@ -1,17 +1,19 @@
 #include <stdio.h>
 #include <string.h>
+//author : Zihao Li
+//Student Id: W1273148
+//split the string
 void cutString(int index, char * buf, char * (number[]), int * technology, int *paid){
     char *p;
+
     p = strtok(buf, " ");
     number[index] = (char *) malloc(sizeof(char*));
     strcpy(number[index],p);
 
     p = strtok(NULL, " ");
-    //technology[index] = (char *) malloc(sizeof(char *));
-    //strcpy(technology[index],p);
     * (technology + index) = (int)(*p - '0');
+
     p = strtok(NULL, " ");
-    //printf("p = %s\n", p);
     * (paid + index) = (int)(*p - '0');
 
 }

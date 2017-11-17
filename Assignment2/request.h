@@ -1,3 +1,5 @@
+//author : Zihao Li
+//Student Id: W1273148
 void generateRequest(struct Request * request, char clientId, short type, char segNo,
                 char length, char technology, int number){
     request -> start = 0xFFFF;

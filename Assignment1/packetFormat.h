@@ -1,3 +1,5 @@
+//author : Zihao Li
+//Student Id: W1273148
 #define MYPORT 32815
 #define BUFFSIZE 1024
 struct Data{

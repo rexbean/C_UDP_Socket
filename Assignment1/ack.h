@@ -1,3 +1,5 @@
+//author : Zihao Li
+//Student Id: W1273148
 void generateACK(struct Ack *ack1, struct Data *data1){
     ack1 -> start = 0xFFFF;
     ack1 -> Id = data1 -> Id;

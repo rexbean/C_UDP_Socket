@@ -10,7 +10,8 @@
 #include "packetFormat.h"
 #include "helper.h"
 #include "data.h"
-
+//author : Zihao Li
+//Student Id: W1273148
 void startClient(int sock);
 void parsePacket(short type, char * buf, int len, int sock);
 

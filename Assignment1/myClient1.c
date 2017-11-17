@@ -10,7 +10,8 @@
 #include "packetFormat.h"
 #include "helper.h"
 #include "data.h"
-
+//author : Zihao Li
+//Student Id: W1273148
 void startClient(int sock);
 void parsePacket(short type, char * buf, int len, int sock);
 
@@ -88,7 +89,6 @@ void startClient(int sock){
             }
         }
         if(outOftime != 1){
-            //printf("message received : \n");
             type =  getType(recvbuf);
             parsePacket(type, recvbuf, packetLength,sock);
         }
@@ -123,7 +123,6 @@ memset(&reject1, 0 , sizeof(reject1));
             } else if(reject1.rejectCode == (short)0xFFF7){
                 printf("client has sent dupliate packet\n");
             }
-            //rintf("reject 1 's rejectCode %x\n",reject1.rejectCode);
             break;
         default : break;
     }

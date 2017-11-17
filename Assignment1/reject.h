@@ -1,4 +1,6 @@
 #include <stdio.h>
+//author : Zihao Li
+//Student Id: W1273148
 void generateReject(struct Reject *reject1, struct Data *data1, short rejectCode){
     reject1 -> start = 0xFFFF;
     reject1 -> Id = data1 -> Id;

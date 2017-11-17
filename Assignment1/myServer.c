@@ -11,6 +11,8 @@
 #include "reject.h"
 #include "helper.h"
 
+//author : Zihao Li
+//Student Id: W1273148
 void startServer(int sock);
 void parsePacket(short type, char * buf, int len, int sock);
 void checkPacket(struct Data * data, int sock);
@@ -18,8 +20,8 @@ void checkPacket(struct Data * data, int sock);
 int packetLength = 0;
 struct sockaddr_in clientAddr;
 socklen_t clientLen;
-int prev = -1;
-int order[5];
+int prev = -1; // previous segmentation number
+int order[5]; // the array to store the times of packet received
 
 int main(void){
     int sock;
@@ -61,6 +63,7 @@ void startServer(int sock){
         clientLen = sizeof(clientAddr);
         memset(recvbuf, 0, sizeof(recvbuf));
         printf("prepareing for receiving the message\n");
+        //receive packet from client
         packetLength = recvfrom(sock, recvbuf, sizeof(recvbuf), 0,
                     (struct sockaddr *)&clientAddr, &clientLen);
         if(packetLength <= 0){
@@ -70,7 +73,9 @@ void startServer(int sock){
             errorOutput("recvfrom error");
         } else {
             printf("message received : %s\n", recvbuf);
+            //get the type of the packet`
             type = getType(recvbuf);
+            //according to the type parse the packet
             parsePacket(type, recvbuf, packetLength,sock);
         }
         printf("\n\n");
@@ -89,13 +94,13 @@ socklen_t clientLen = sizeof(clientAddr);
 memset(&ack1, 0 , sizeof(ack1));
 memset(&reject1, 0 , sizeof(reject1));
     switch(type){
-        case 0:
+        case 0:// 0 represents data
             copyMemory(buf, (char *)&data1, len);
             printf("data 1' s length = %d\n",data1.length);
             printf("data 1's Id = %x\n", data1.Id);
             printf("data 1 's payload %s\n",data1.payload);
             printf("true or false %d\n", data1.length - 48 == strlen(data1.payload) ? 1 : 0);
-
+            // check whether data is valid
             checkPacket(&data1,sock);
 
             break;

@@ -11,7 +11,8 @@
 #include "helper.h"
 #include "request.h"
 
-
+//author : Zihao Li
+//student Id: W1273148
 void startClient(int sock);
 void parsePacket(char * buf, int len, int sock);
 
@@ -49,7 +50,6 @@ void startClient(int sock){
 
     //(struct Request * request, char clientId, short type, char segNo,
                     //char length, char technology, int number)
-
     for(int i = 0; i < 4; i++){
         struct Request request;
         generateRequest(&request, clientId, 0xFFF8, '0','0',technology[i], number[i]);
@@ -65,6 +65,7 @@ void startClient(int sock){
             errorOutput("recvfrom error");
         } else {
             printf("message received : \n");
+            //parse the packet
             parsePacket(recvbuf, packetLength, sock);
          }
         memset(recvbuf, 0, sizeof(recvbuf));
@@ -76,7 +77,6 @@ void startClient(int sock){
 void parsePacket(char * buf, int len, int sock){
     struct Request request;
     printf("parse Packet\n");
-    //socklen_t clientLen = sizeof(clientAddr);
     memset(&request, 0 , sizeof(request));
     copyMemory(buf, (char *)&request, len);
     printf("checkPacket\n");
