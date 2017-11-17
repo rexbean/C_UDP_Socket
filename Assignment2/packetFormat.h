@@ -5,6 +5,6 @@ struct Request{
     char segNo;
     char length;
     char technology;
-    int number;
+    unsigned int number;
     short end;
 };

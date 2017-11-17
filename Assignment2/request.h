@@ -10,13 +10,13 @@ void generateRequest(struct Request * request, char clientId, short type, char s
     request -> end = 0xFFFF;
 }
 
-void generateFromRequest(struct Request *request, short type, char technology, struct Request * requestFrom){
+void generateFromRequest(struct Request *request, short type, struct Request * requestFrom){
     request -> start = 0xFFFF;
     request -> Id = requestFrom -> Id;
     request -> type = type;
     request -> segNo = requestFrom -> segNo;
     request -> length = requestFrom -> length;
-    request -> technology = technology;
+    request -> technology = requestFrom -> technology;
     request -> number = requestFrom -> number;
     request -> end = 0xFFFF;
 }
