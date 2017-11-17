@@ -73,6 +73,9 @@ void startServer(int sock){
             type = getType(recvbuf);
             parsePacket(type, recvbuf, packetLength,sock);
         }
+        printf("\n\n");
+
+
     }
     close(sock);
 }
@@ -95,11 +98,6 @@ memset(&reject1, 0 , sizeof(reject1));
 
             checkPacket(&data1,sock);
 
-            printf("generated\n");
-            // for(int i = 0; i < sizeof(reject1); i++){
-            //     printf("%x ", *((char *)&reject1 + i));
-            // }
-            printf("sent\n");
             break;
         case 1:
             copyMemory(buf, (char *)&ack1, len);

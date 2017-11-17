@@ -10,7 +10,7 @@
 short getType(char * buf){
     short type = 0;
     int i = 0;
-    printf("getType\n");
+    //printf("getType\n");
     //showMessage(buf);
     type = (*(buf + 5))<<8 | (*(buf + 4));
     printf("the type is %x\n",type);

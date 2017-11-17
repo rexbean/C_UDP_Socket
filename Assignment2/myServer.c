@@ -80,6 +80,7 @@ void startServer(int sock){
             printf("message received : %s\n", recvbuf);
             parsePacket(recvbuf, packetLength, sock);
         }
+        printf("\n\n");
     }
     close(sock);
 }
@@ -93,11 +94,6 @@ void parsePacket(char * buf, int len, int sock){
     printf("checkPacket\n");
     checkPacket(&request,sock);
 
-    printf("generated\n");
-    // for(int i = 0; i < sizeof(reject1); i++){
-    //     printf("%x ", *((char *)&reject1 + i));
-    // }
-    printf("sent\n");
 }
 
 void checkPacket(struct Request * request, int sock){
@@ -133,7 +129,6 @@ void checkPacket(struct Request * request, int sock){
     generateFromRequest(&requestRe, status, request);
     sendto(sock, (char *)&requestRe, sizeof(requestRe), 0,
           (struct sockaddr *)&clientAddr, clientLen);
-    printf("sent\n");
     // generateACK(&ack, data);
     // sendto(sock, (char *)&ack, sizeof(ack), 0,
     //           (struct sockaddr *)&clientAddr, clientLen);

@@ -41,24 +41,33 @@ void startClient(int sock){
     short type;
     char recvbuf[1024] = {0};
     int timesOfSend[5] = {0};
+    int order[5] = {1,2,3,0,0};
+    char length[5] = {'3','4','3','3','3'};
     char* payloadArray[5];
+
 
     payloadArray[0] = "123";
     payloadArray[1] = "456";
     payloadArray[2] = "789";
     payloadArray[3] = "101";
     payloadArray[4] = "112";
+
+
     //data
     for(int i = 0; i < 5; i++){
         struct Data data;
         int outOftime = 0;
-        int isFirst = 1;
-        generateData(&data, clientId, payloadArray[i], '3', (char)(i + 48));
+        if(order[i] == 3){
+            generateDataNoEnd(&data, clientId, payloadArray[order[i]], length[i], (char)(order[i] + 48));
+        } else {
+            generateData(&data, clientId, payloadArray[3], length[i], (char)(order[i] + 48));
+        }
+
         //printData(&data);
         //set a timeout option
         setsockopt(sock,SOL_SOCKET,SO_RCVTIMEO,(char*)&timeout,sizeof(struct timeval));
 
-        printf("message send to server : %s\n", payloadArray[i]);
+        printf("message send to server : %s\n", payloadArray[order[i]]);
         sendto(sock, (char *)&data, sizeof(data), 0,
               (struct sockaddr *)&serverAddr, sizeof(serverAddr));
         printf("send successfully\n");
@@ -67,7 +76,7 @@ void startClient(int sock){
                 NULL, NULL);
         while(packetLength == -1 && errno == EAGAIN){
             printf("do not receive ack %d times\n", ++timesOfSend[i]);
-            if(timesOfSend[i] <= 3){
+            if(timesOfSend[i] < 3){
                 sendto(sock, (char *)&data, sizeof(data), 0,
                       (struct sockaddr *)&serverAddr, sizeof(serverAddr));
                 packetLength = recvfrom(sock, recvbuf, sizeof(recvbuf), 0,
@@ -79,15 +88,13 @@ void startClient(int sock){
             }
         }
         if(outOftime != 1){
-            printf("message received : \n");
+            //printf("message received : \n");
             type =  getType(recvbuf);
             parsePacket(type, recvbuf, packetLength,sock);
         }
         memset(recvbuf, 0, sizeof(recvbuf));
         printf("\n\n");
     }
-
-
     close(sock);
 }
 
@@ -107,7 +114,16 @@ memset(&reject1, 0 , sizeof(reject1));
             break;
         case 2:
             copyMemory(buf, (char *)&reject1, len);
-            printf("reject 1 's rejectCode %x\n",reject1.rejectCode);
+            if(reject1.rejectCode == (short)0xFFF4){
+                printf("packet is in wrong order\n");
+            } else if(reject1.rejectCode == (short)0xFFF5){
+                printf("payload length does not match\n");
+            } else if(reject1.rejectCode == (short)0xFFF6){
+                printf("packet does not have end\n");
+            } else if(reject1.rejectCode == (short)0xFFF7){
+                printf("client has sent dupliate packet\n");
+            }
+            //rintf("reject 1 's rejectCode %x\n",reject1.rejectCode);
             break;
         default : break;
     }

@@ -42,28 +42,34 @@ void startClient(int sock){
     int packetLength;
     short type;
     char recvbuf[1024] = {0};
-    
-    //request
 
-    struct Request request;
+    //request
+    char technology[4] = {'4','3','5','3'};
+    int number[4] = {4085546805, 4086668821, 4086808831, 4086484023};
+
     //(struct Request * request, char clientId, short type, char segNo,
                     //char length, char technology, int number)
-    generateRequest(&request, clientId, 0xFFF8, '0','0','2', 4085546805);
-    //printData(&data);
-    printf("message send to server : %s\n", (char *)&request);
-    sendto(sock, (char *)&request, sizeof(request), 0,
-              (struct sockaddr *)&serverAddr, sizeof(serverAddr));
-    printf("send1 successfully\n");
 
-    packetLength =  recvfrom(sock, recvbuf, sizeof(recvbuf), 0,
-                NULL, NULL);
-    if(packetLength <= 0){
-        errorOutput("recvfrom error");
-    } else {
-        printf("message received : \n");
-        parsePacket(recvbuf, packetLength, sock);
-     }
-    memset(recvbuf, 0, sizeof(recvbuf));
+    for(int i = 0; i < 4; i++){
+        struct Request request;
+        generateRequest(&request, clientId, 0xFFF8, '0','0',technology[i], number[i]);
+        //printData(&data);
+        printf("message send to server : %u\n", number[i]);
+        sendto(sock, (char *)&request, sizeof(request), 0,
+                  (struct sockaddr *)&serverAddr, sizeof(serverAddr));
+        printf("send successfully\n");
+
+        packetLength =  recvfrom(sock, recvbuf, sizeof(recvbuf), 0,
+                    NULL, NULL);
+        if(packetLength <= 0){
+            errorOutput("recvfrom error");
+        } else {
+            printf("message received : \n");
+            parsePacket(recvbuf, packetLength, sock);
+         }
+        memset(recvbuf, 0, sizeof(recvbuf));
+        printf("\n\n");
+    }
     close(sock);
 }
 
