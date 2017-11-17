@@ -1,12 +1,12 @@
-#Read me
+# Read me
 ## Assignment 1
 
-###Inputs
+### Inputs
 - There are two clients in the assignment1: myClient.c & myClient1.c
 - In myClient.c,
   + There are five data inputs and they are all correct.
 
-#Server should be restart at here!!
+# Server should be restart at here!!
 - In myClient1.c:
   +There are five data inputs. 
     - The first one is the correct one.
@@ -25,7 +25,7 @@
   + NoResponse.jpg is the screenshot of the no response.
 
 ## Assignment 2
-###Inputs
+### Inputs
 - Input is in the myClient.c.
   + There are four inputs
     - The first one is correct one.
